@@ -50,8 +50,8 @@ namespace itertools
 
                     bool operator!=(iterator &other)  
                     {
-                        return (*this != other); 
-                    }
+                        return !(*this == other); 
+                        }
 
                     intholder operator++(int)
                     {
