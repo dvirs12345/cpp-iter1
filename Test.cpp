@@ -6,11 +6,12 @@
 #include "filterfalse.hpp"
 #include "compress.hpp"
 #include <iostream>
+#include <vector>
 
 using namespace std;
 using namespace itertools;
 
-TEST_CASE("Test range") // 30
+TEST_CASE("Test range") 
 {
     int c = 0;
     for(int num : range(0, 10))
@@ -34,7 +35,7 @@ TEST_CASE("Test range") // 30
     }
 }
 
-TEST_CASE("Test accumulate") // 35
+TEST_CASE("Test accumulate") 
 {
     int c[] = {5, 5+6, 5+6+7, 5+6+7+8};
     int i = 0;
@@ -69,17 +70,49 @@ TEST_CASE("Test accumulate") // 35
     }
 }
 
-TEST_CASE("Test filterfalse") // 25
+TEST_CASE("Test filterfalse") 
 {
+    typedef struct 
+    {
+        bool operator()(int i) const 
+        {
+            return i%3 == 0;
+        }
+    } func;
 
+    typedef struct 
+    {
+        bool operator()(int i) const 
+        {
+            return i%3 == 1;
+        }
+    } func2;
+
+    typedef struct 
+    {
+        bool operator()(int i) const 
+        {
+            return i%3 == 2;
+        }
+    } func3;
+
+    func f;
+    for (auto i : filterfalse(f, range(0,20))) 
+        CHECK(!f(i));
+
+    func2 f2;
+    for (auto i : filterfalse(f2, range(0,20))) 
+        CHECK(!f2(i));
+
+
+    func3 f3;
+    for (auto i : filterfalse(f3, range(0,20))) 
+        CHECK(!f3(i));
 }
 
-TEST_CASE("Test compress") // 25
+TEST_CASE("Test compress") 
 {
- 
-}
-
-TEST_CASE("Test Exceptions") // 15
-{
-
+    auto v1 = vector({true, false, true, false, true, false, true, false, true, false});
+    for(auto i : compress(range(0,10), v1))
+        CHECK(i%2 == 0);
 }

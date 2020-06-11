@@ -1,20 +1,24 @@
 // Author - Dvir Sadon
 
 
-namespace itertools {
+namespace itertools 
+{
     template <typename FUNC, typename VAC>
     class filterfalse 
     {
+        
         VAC data;
         FUNC func;
+
         public:
-            explicit filterfalse(FUNC f,VAC x) : data(x), func(f) {}
+
+            filterfalse(FUNC f,VAC x) : data(x), func(f) { }
             class iterator
             {
                 typename VAC::iterator _iter;
                 typename VAC::iterator _it_end;
                 FUNC _it_func;
-                
+
                 public:
                     explicit iterator(typename VAC::iterator it, typename VAC::iterator end, FUNC func): _iter(it), _it_end(end), _it_func(func)
                     {
@@ -67,6 +71,7 @@ namespace itertools {
             {
                 return iterator(data.begin(), data.end(), func);
             }
+
             iterator end()
             {
                 return iterator(data.end(), data.end(), func);

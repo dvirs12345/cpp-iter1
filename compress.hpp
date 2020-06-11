@@ -8,9 +8,9 @@ namespace itertools
     {
         VAC1 data;
         VAC2 bool_data;
-        
+
         public:
-            explicit compress(VAC1 x1, VAC2 x2) : data(x1), bool_data(x2) { }
+            compress(VAC1 x1, VAC2 x2) : data(x1), bool_data(x2) { }
             class iterator
             {
                 typename VAC1::iterator _iter;
@@ -18,7 +18,7 @@ namespace itertools
                 typename VAC2::iterator _bool_it;
 
                 public:
-                    explicit iterator(typename VAC1::iterator it, typename VAC1::iterator end, typename VAC2::iterator _bool) : _iter(it), _it_end(end), _bool_it(_bool) 
+                    iterator(typename VAC1::iterator it, typename VAC1::iterator end, typename VAC2::iterator _bool) : _iter(it), _it_end(end), _bool_it(_bool) 
                     {
                         while (_iter != _it_end && !(*_bool_it)) 
                         {

@@ -20,7 +20,7 @@ namespace itertools
 
         public:
 
-            accumulate(Acu x,FUNC f = Func1()) : data(x), func(f) { this->data = x; }
+            accumulate(Acu x, FUNC f = Func1()) : data(x), func(f) { }
             class iterator
             {
                 decltype (*(data.begin())) _it_data;
@@ -32,7 +32,7 @@ namespace itertools
 
                     iterator(typename Acu::iterator it, typename Acu::iterator end, FUNC func): _iter(it), _it_end(end), _it_func(func), _it_data(*it){};
                     iterator(const iterator& other) = default;
-                    
+
                     iterator& operator=(const iterator& other) 
                     {
                         if (&other != this)
