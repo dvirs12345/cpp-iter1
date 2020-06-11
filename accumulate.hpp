@@ -3,6 +3,7 @@
 
 namespace itertools 
 {
+    /* default function for accumliation */
     typedef struct 
     {
         template<typename T>
@@ -20,32 +21,36 @@ namespace itertools
 
         public:
 
-            accumulate(Acu x, FUNC f = Func1()) : data(x), func(f) { }
+            accumulate(Acu var, FUNC fun = Func1()) : data(var), func(fun) { }
             class iterator
             {
-                decltype (*(data.begin())) _it_data;
-                typename Acu::iterator _iter;
-                typename Acu::iterator _it_end;
-                FUNC _it_func;
+                decltype (*(data.begin())) iter_data;
+                typename Acu::iterator iter;
+                typename Acu::iterator iter_end;
+                FUNC iter_func;
 
                 public:
 
-                    iterator(typename Acu::iterator it, typename Acu::iterator end, FUNC func): _iter(it), _it_end(end), _it_func(func), _it_data(*it){};
+                    /* Constructors */
+                    iterator(typename Acu::iterator iter, typename Acu::iterator iter_end, FUNC my_func): iter(iter), iter_end(iter_end), iter_func(my_func), iter_data(*iter){};
                     iterator(const iterator& other) = default;
 
-                    iterator& operator=(const iterator& other) 
+                    /* Operators */
+                    iterator& operator=(iterator& other) 
                     {
                         if (&other != this)
-                            iterator(other._iter,other._it_end,other._it_func);
+                            iterator(other.iter,other.iter_end,other.iter_func);
                         return *this;
                     }
+
                     iterator& operator++()
                     {
-                        ++_iter;
-                        if(_iter != _it_end)
-                            _it_data = _it_func(_it_data, *_iter);
+                        ++iter;
+                        if(iter != iter_end)
+                            iter_data = iter_func(iter_data, *iter);
                         return *this;
                     }
+
                     iterator operator++(int)
                     {
                         iterator temp = *this;
@@ -53,32 +58,31 @@ namespace itertools
                         return temp;
                     }
 
-                    bool operator==(const iterator& other) 
+                    bool operator==(iterator& other) 
                     {
-                        return (_iter == other._iter);
+                        return (iter == other.iter);
                     }
 
-                    bool operator!=(const iterator& other) 
+                    bool operator!=(iterator& other) 
                     {
-                        return (_iter != other._iter);
+                        return !(iter == other.iter);
                     }
 
                     auto operator*()
                     {
-                        return _it_data;
+                        return this->iter_data;
                     }
             };
 
+        /* Begin and End for iterator */
         iterator begin()
         {
             return iterator(data.begin(), data.end(), func);
         }
+        
         iterator end()
         {
             return iterator(data.end(), data.end(), func);
         }
-
-
     };
-
 };

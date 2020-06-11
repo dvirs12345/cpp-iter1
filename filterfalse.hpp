@@ -3,44 +3,46 @@
 
 namespace itertools 
 {
-    template <typename FUNC, typename VAC>
+    template <typename FUNC, typename ff>
     class filterfalse 
     {
-        
-        VAC data;
+
+        ff data;
         FUNC func;
 
         public:
 
-            filterfalse(FUNC f,VAC x) : data(x), func(f) { }
+            filterfalse(FUNC f1,ff var) : data(var), func(f1) { }
+
             class iterator
             {
-                typename VAC::iterator _iter;
-                typename VAC::iterator _it_end;
-                FUNC _it_func;
+                typename ff::iterator iter;
+                typename ff::iterator iter_end;
+                FUNC iter_func;
 
                 public:
-                    explicit iterator(typename VAC::iterator it, typename VAC::iterator end, FUNC func): _iter(it), _it_end(end), _it_func(func)
+                    /* Constructors */
+                    iterator(typename ff::iterator iter, typename ff::iterator iter_end, FUNC iter_func): iter(iter), iter_end(iter_end), iter_func(iter_func)
                     {
-                        while (_iter != _it_end && _it_func(*_iter))++_iter;
+                        while (iter != iter_end && iter_func(*iter))
+                            ++iter;
                     };
 
-                    iterator(const iterator& other) = default;
+                    iterator(iterator& other) = default;
 
-                    iterator& operator=(const iterator& other) 
+                    /* Operators */
+                    iterator& operator=(iterator& other) 
                     {
-                        if (&other != this){
-                            iterator(other._iter,other._it_end,other._it_func);
-                        }
+                        if (&other != this)
+                            iterator(other.iter,other.iter_end,other.iter_func);
                         return *this;
                     }
 
                     iterator& operator++()
                     {
-                        ++_iter;
-                        while (_iter != _it_end && _it_func(*_iter)){
-                            ++_iter;
-                        }
+                        ++iter;
+                        while (iter != iter_end && iter_func(*iter))
+                            ++iter;
                         return *this;
                     }
 
@@ -51,22 +53,23 @@ namespace itertools
                         return temp;
                     }
 
-                    bool operator==(const iterator& other) 
+                    bool operator==(iterator& other) 
                     {
-                        return (_iter == other._iter);
+                        return (iter == other._iter);
                     }
 
-                    bool operator!=(const iterator& other) 
+                    bool operator!=(iterator& other) 
                     {
-                        return (_iter != other._iter);
+                        return !(iter == other.iter);
                     }
 
                     auto operator*()
                     {
-                        return *_iter;
+                        return *iter;
                     }
             };
 
+            /* Begin and End for iterator */
             iterator begin()
             {
                 return iterator(data.begin(), data.end(), func);

@@ -14,7 +14,7 @@ namespace itertools
             range(int first, int last){ this->first = first; this->last = last; }
 
             /* Iterator */
-            class iterator // inspireed by https://www.artificialworlds.net/blog/2017/05/11/c-iterator-example-and-an-iterable-range/
+            class iterator
             {
                 private:
                     int value;
@@ -37,11 +37,21 @@ namespace itertools
 
                     iterator(int value) { this->value = value; }
 
-                    int operator*() const { return value; }
+                    /* Operators */
+                    int operator*() 
+                    {
+                        return value; 
+                    }
 
-                    bool operator==(const iterator &other) const { return value == other.value; }
+                    bool operator==(iterator &other) 
+                    { 
+                        return value == other.value; 
+                    }
 
-                    bool operator!=(const iterator &other) const { return !(*this == other); }
+                    bool operator!=(iterator &other)  
+                    {
+                        return (*this != other); 
+                    }
 
                     intholder operator++(int)
                     {
@@ -56,9 +66,17 @@ namespace itertools
                         return *this;
                     }
             };
-            iterator begin() { return iterator(first); }
 
-            iterator end() { return iterator(last); }
+            /* Begin and End for iterator */
+            iterator begin() 
+            {
+                return iterator(first); 
+            }
+
+            iterator end() 
+            { 
+                return iterator(last); 
+            }
 
             typedef int	value_type;
     };

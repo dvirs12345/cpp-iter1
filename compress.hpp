@@ -7,42 +7,47 @@ namespace itertools
     class compress 
     {
         VAC1 data;
-        VAC2 bool_data;
+        VAC2 data_tf;
 
         public:
-            compress(VAC1 x1, VAC2 x2) : data(x1), bool_data(x2) { }
+
+            compress(VAC1 var, VAC2 var1) : data(var), data_tf(var1) { }
+
             class iterator
             {
-                typename VAC1::iterator _iter;
-                typename VAC1::iterator _it_end;
-                typename VAC2::iterator _bool_it;
+                typename VAC1::iterator iter;
+                typename VAC1::iterator iter_end;
+                typename VAC2::iterator iter_tf;
 
                 public:
-                    iterator(typename VAC1::iterator it, typename VAC1::iterator end, typename VAC2::iterator _bool) : _iter(it), _it_end(end), _bool_it(_bool) 
+                    /* Constructors */
+                    iterator(typename VAC1::iterator iter, typename VAC1::iterator iter_end, typename VAC2::iterator tf) : iter(iter), iter_end(iter_end), iter_tf(tf) 
                     {
-                        while (_iter != _it_end && !(*_bool_it)) 
+                        while (!(iter == iter_end) && !(*iter_tf)) 
                         {
-                            ++_iter;
-                            ++_bool_it;
+                            ++iter;
+                            ++iter_tf;
                         }
                     };
-                    iterator(const iterator& other) = default;
-
-                    iterator& operator=(const iterator& other) 
+                    
+                    iterator(iterator& other) = default;
+                    
+                    /* Operators */
+                    iterator& operator=(iterator& other) 
                     {
-                        if (&other != this){
-                            iterator(other._iter,other._it_end,other._it_func);
-                        }
+                        if (&other != this)
+                            iterator(other.iter,other.iter_end,other.iter_func);
                         return *this;
                     }
 
                     iterator& operator++()
                     {
-                        ++_iter;
-                        while (_iter != _it_end && !(*_bool_it)) 
-                            ++_iter;
+                        ++iter;
+                        while (iter != iter_end && !(*iter_tf)) 
+                            ++iter;
                         return *this;
                     }
+
                     iterator operator++(int)
                     {
                         iterator temp = *this;
@@ -50,30 +55,31 @@ namespace itertools
                         return temp;
                     }
 
-                    bool operator==(const iterator& other) 
+                    bool operator==(iterator& other) 
                     {
-                        return (_iter == other._iter);
+                        return (iter == other.iter);
                     }
 
-                    bool operator!=(const iterator& other) 
+                    bool operator!=(iterator& other) 
                     {
-                        return (_iter != other._iter);
+                        return !(iter == other.iter);
                     }
 
                     auto operator*()
                     {
-                        return *_iter;
+                        return *iter;
                     }
             };
-
-            iterator begin(){
-                return iterator(data.begin(), data.end(), bool_data.begin());
-            }
-            iterator end(){
-                return iterator(data.end(), data.end(), bool_data.begin());
+            /* Begin and End for iterator */
+            iterator begin()
+            {
+                return iterator(data.begin(), data.end(), data_tf.begin());
             }
 
-
+            iterator end()
+            {
+                return iterator(data.end(), data.end(), data_tf.begin());
+            }
     };
 
 };
