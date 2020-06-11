@@ -14,7 +14,7 @@ namespace itertools
             range(int first, int last){ this->first = first; this->last = last; }
 
             /* Iterator */
-            class iterator // code from https://www.artificialworlds.net/blog/2017/05/11/c-iterator-example-and-an-iterable-range/
+            class iterator // inspireed by https://www.artificialworlds.net/blog/2017/05/11/c-iterator-example-and-an-iterable-range/
             {
                 private:
                     int value;
